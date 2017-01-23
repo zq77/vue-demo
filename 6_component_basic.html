@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="js/vue.js"></script>
+		<title>组件的基本使用</title>
+	</head>
+
+	<body>
+		<!--这是我们的View-->
+		<div id="app">
+			<my-component></my-component>
+			<my-component2></my-component2>
+			<local-component></local-component>
+		</div>
+
+		<my-component></my-component>
+
+		<h1>---------------------分割线---------------------</h1>
+		<div id="app2">
+			<my-component></my-component>
+			<my-component2></my-component2>
+			<local-component2></local-component2>
+			<!--<localComponent></localComponent>-->
+		</div>
+
+		<h1>---------------------分割线---------------------</h1>
+		<div id="app3">
+			<parent-component></parent-component>
+		</div>
+
+		<h1>---------------------分割线---------------------</h1>
+		<div id="app4">
+			<without-component></without-component>
+		</div>
+		<template id="withoutComponent">
+			<p>This is a use template label component</p>
+		</template>
+	</body>
+
+	<script>
+		// 第一种注册方式
+        // 1.创建一个组件构造器
+        var myComponent = Vue.extend({
+            template: '<div>This is global component!</div>'
+        });
+
+        // 2.注册组件，并指定组件的标签，组件的HTML标签为<my-component>
+        Vue.component('my-component', myComponent)
+
+        // 第二种组册方式
+        Vue.component('my-component2', {
+            template: '<div>This is global component2!</div>'
+		});
+
+		// 局部注册
+        var localComponent = Vue.extend({
+            template: '<div>This is local component + {{n}}!</div>',
+			data: function() {
+                return {
+                    n : ' 123'
+                }
+			}
+        });
+
+        new Vue({
+            el: '#app',
+            components: {
+                'local-component': localComponent
+			}
+        });
+
+		new Vue({
+		    el: '#app2',
+            components: {
+		        'local-component2': {
+		            template: '<div>This is local component2!</div>'
+				},
+		        'localComponent': localComponent
+			}
+		});
+
+		// 父 组件 子 组件
+        var child = Vue.extend({
+            template: '<p>This is a child component!</p>'
+        });
+
+        var parent = Vue.extend({
+            // 在Parent组件内使用<child-component>标签
+            template :'<div><p>This is a Parent component</p> <child-component></child-component></div>',
+            components: {
+                // 局部注册Child组件，该组件只能在Parent组件内使用
+                'child-component': child
+            }
+        });
+
+		new Vue({
+		    el: '#app3',
+			components: {
+				'parent-component': parent
+			}
+		});
+
+		var withoutComponent = Vue.extend({
+		    template: '#withoutComponent'
+		});
+        new Vue({
+            el: '#app4',
+            components: {
+                'without-component': withoutComponent
+            }
+        })
+	</script>
+</html>

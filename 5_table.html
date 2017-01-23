@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/demo.css" />
+		<script src="js/vue.js"></script>
+	</head>
+
+	<body>
+		<div id="app">
+			<fieldset>
+				<legend>
+					Create New
+				</legend>
+				<div class="form-group">
+					<label>Name:</label>
+					<input type="text" v-model="newUser.name"/>
+				</div>
+				<div class="form-group">
+					<label>Age:</label>
+					<input type="text" v-model="newUser.age"/>
+				</div>
+				<div class="form-group">
+					<label>Sex:</label>
+					<select v-model="newUser.sex">
+						<option value="Male">Male</option>
+						<option value="Female">Female</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label></label>
+					<button @click="createUser()">Create</button>
+				</div>
+			</fieldset>
+			<table>
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Age</th>
+						<th>Sex</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<template v-if="users.length > 0">
+						<tr v-for="(user, index) in users">
+							<td>{{ user.name }}</td>
+							<td>{{ user.age }}</td>
+							<td>{{ user.sex }}</td>
+							<td class="text-center">
+								<button @click.prevent="deleteUser(index)">Delete</button>
+							</td>
+						</tr>
+					</template>
+					<template v-else>
+						<tr>
+							<td colspan="4" class="text-center">没有数据</td>
+						</tr>
+					</template>
+				</tbody>
+			</table>
+		</div>
+	</body>
+
+	<script>
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				newUser: {
+					name: null,
+					age: null,
+					sex: 'Male'
+				},
+                users: [{
+					name: 'Jack',
+					age: 30,
+					sex: 'Male'
+				}, {
+					name: 'Bill',
+					age: 26,
+					sex: 'Male'
+				}, {
+					name: 'Tracy',
+					age: 22,
+					sex: 'Female'
+				}, {
+					name: 'Chris',
+					age: 36,
+					sex: 'Male'
+				}]
+			},
+			methods:{
+				createUser: function(){
+					this.users.push(this.newUser);
+					// 添加完newUser对象后，重置newUser对象
+					this.newUser = {name: null, age: null, sex: 'Male'}
+				},
+				deleteUser: function(index){
+				    // 删一个数组元素
+					this.users.splice(index,1);
+					console.log(this.users.length)
+				}
+			}
+		})
+	</script>
+
+</html>

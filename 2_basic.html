@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.css" />
+		<script src="js/vue.js"></script>
+		<title>生命周期</title>
+	</head>
+
+	<body>
+		<!--这是我们的View-->
+		<div id="app">
+			<div :class="isHidden">
+				<p>{{ user.id + ' - ' + user.name }}</p>
+				<p>{{ user.age * 2 }}</p>
+				<p>{{ user.age > 2 ? '> 2' : '< 2' }}</p>
+				<p>当前时间：{{ currentTime }}</p>
+				<p>filter ：{{ 'asdf' | toUp }}</p>
+			</div>
+			<div>
+				<button v-on:click="showEl()">show</button>
+				<button v-on:click="hiddenEl()">hidden</button>
+			</div>
+			<div v-html="inputHtml"></div>
+		</div>
+		
+	</body>
+	
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				user : {
+				    id : '1',
+					name: 'name1',
+					sex: 'male',
+					age: 10
+				},
+				show: true,
+                inputHtml: '<p>纯 html 输出</p>'
+			},
+			computed: {
+                isHidden: function () {
+					if (!this.show) {
+					    return 'hidden';
+					}
+                },
+                currentTime: function () {
+                    var m = new Date();
+                    return m.getFullYear() + '年' + (m.getMonth() + 1) +'月'+ m.getDate()+'日' + m.getTime();
+                }
+			},
+			methods: {
+			    showEl: function () {
+					this.show = true;
+                },
+				hiddenEl: function () {
+					this.show = false;
+                }
+			},
+			filters: {
+			    toUp: function (value) {
+                    return value.toUpperCase();
+                }
+			}
+		})
+	</script>
+</html>
